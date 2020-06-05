@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  fake-umbrella-client:
+    build: fake-umbrella-client
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./fake-umbrella-client:/app
+
+  fake-umbrella-server:
+    build: fake-umbrella-server
+    ports:
+      - "3000:3000"
+    links:
+      - database
+
+  database:
+    image: mongo
+    ports:
+      - "27017:27017"
