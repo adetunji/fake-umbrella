@@ -13,15 +13,32 @@
       <input type="text" class="form-control" id="name" #name>
     </div>
     <div class="form-group">
-      <label for="age">Age</label>
-      <input type="number" class="form-control" id="age" #age>
+      <label for="contact">Person of Contact</label>
+      <input type="text" class="form-control" id="contact" #contact>
     </div>
-    <button type="button" (click)="addPerson(name.value, age.value)" class="btn btn-primary">Add person</button>
+    <div class="form-group">
+      <label for="telephone">Telephone Number</label>
+      <input type="text" class="form-control" id="telephone" #telephone>
+    </div>
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" class="form-control" id="location" #location>
+    </div>
+    <div class="form-group">
+      <label for="employees">Number of Employees</label>
+      <input type="number" class="form-control" id="employees" #employees>
+    </div>
+    <button type="button" (click)="addPerson(name.value, contact.value, telephone.value, location.value, employees.value)" class="btn btn-primary">Add Customer</button>
   </form>
 
-  <h3>People</h3>
+  <h3>Customers</h3>
   <!-- Bootstrap Card -->
-  <div class="card card-block col-md-3" *ngFor="let person of people">
-    <h4 class="card-title">{{person.name}}  {{person.age}}</h4>
+  <div class="card card-block col-sm-2 col-sm-offset-1" *ngFor="let person of people">
+    <h4 class="card-title">{{person.name}}</h4>
+    <h4 class="card-title">{{person.contact}}</h4>
+    <h4 class="card-title">{{person.telephone}}</h4>
+    <h4 class="card-title">{{person.location}}</h4>
+    <h4 class="card-title">{{person.num_of_employees}}</h4>
+    <button type="button" (click)="deleteCustomer(person._id)" class="btn btn-primary">Delete Customer</button>
   </div>
 </div>

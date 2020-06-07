@@ -18,18 +18,29 @@ export class AppComponent implements OnInit {
     this.getAllPeople();
   }
   
-  addPerson(name, age) {
-    this.http.post(`${this.API}/users`, {name, age})
+  addPerson(name, contact, telephone, location, employees) {
+    this.http.post(`${this.API}/customers`, {name, contact, telephone, location, employees})
     .subscribe(() => {
       this.getAllPeople();
     });
   }
   
   getAllPeople() {
-    this.http.get(`${this.API}/users`)
+    this.http.get(`${this.API}/customers`)
     .subscribe((people: any) => {
       console.log(people);
       this.people = people;
     });
   }
+  
+  deleteCustomer(id: string) {
+    this.http.delete(`${this.API}/customers/${id}`)
+      .subscribe((message: any) => {
+        console.log(message);
+        if (message) {
+          this.getAllPeople();
+        }
+      });
+  }
+  
 }

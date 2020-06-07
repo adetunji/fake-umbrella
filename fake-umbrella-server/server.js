@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Cross Origin middleware
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   next()
 });
@@ -38,4 +39,4 @@ const server = http.createServer(app);
 
 // _ Listen on provided port, on all network interfaces.
 
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+server.listen(port, () => console.log(`API running on localhost:${port}!`));

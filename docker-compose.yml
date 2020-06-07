@@ -12,6 +12,8 @@ services:
     build: fake-umbrella-server
     ports:
       - "3000:3000"
+    volumes:
+      - ./fake-umbrella-server:/server
     links:
       - database
 
