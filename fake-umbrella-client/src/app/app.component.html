@@ -33,12 +33,18 @@
 
   <h3>Customers</h3>
   <!-- Bootstrap Card -->
-  <div class="card card-block col-sm-2 col-sm-offset-1" *ngFor="let person of people">
-    <h4 class="card-title">{{person.name}}</h4>
-    <h4 class="card-title">{{person.contact}}</h4>
-    <h4 class="card-title">{{person.telephone}}</h4>
-    <h4 class="card-title">{{person.location}}</h4>
-    <h4 class="card-title">{{person.num_of_employees}}</h4>
-    <button type="button" (click)="deleteCustomer(person._id)" class="btn btn-primary">Delete Customer</button>
+  <div class="card card-block col-sm-2 col-sm-offset-1" style="margin-bottom: 80px;" *ngFor="let customer of customers">
+    <h4 class="card-title">{{customer.name}}</h4>
+    <h4 class="card-title">{{customer.contact}}</h4>
+    <h4 class="card-title">{{customer.telephone}}</h4>
+    <h4 class="card-title">{{customer.location}}</h4>
+    <h4 class="card-title">{{customer.num_of_employees}}</h4>
+    <button type="button" (click)="deleteCustomer(customer._id)" class="btn btn-primary">Delete Customer</button>
   </div>
+
+  <highcharts-chart
+    [Highcharts]="Highcharts"
+    [options]="chartOptions"
+    style="width: 100%; height: 400px; display: block;">
+  </highcharts-chart>
 </div>
