@@ -40,9 +40,10 @@ export class AppComponent implements OnInit {
   public getAllCustomers() {
     this.http.get(`${this.api}/customers`)
     .subscribe((customers: any) => {
-      console.log(customers);
       this.customers = customers;
-      this.getCustomerData().subscribe((res) => {console.log(res, res.length)});
+      this.getCustomerData().subscribe((res) => {
+        console.log(res);
+      });
       // this.createChart(customerData);
     });
   }
@@ -59,7 +60,6 @@ export class AppComponent implements OnInit {
   }
   
   public getWeatherInfo(city): Observable<any> {
-    let cityName = 'Vancouver';
     let weatherFind: any;
     // let item = new Observable()
     return this.http.get(`${this.openweatherURL}${city}&appid=${this.apiKey}`)
@@ -71,57 +71,20 @@ export class AppComponent implements OnInit {
                 || (weather.weather[0].id >= 300 && weather.weather[0].id <= 321) ||
                 (weather.weather[0].id >= 500 && weather.weather[0].id <= 531));
             });
-      }))
+      }));
   }
   
   public getCustomerData(): Observable<any> {
-    let totalNumOfEmployees: any = [];
-    let subject = new Subject<any>();
-    let customerNames: string[] = [];
-    let customerChartData: any = [];
-    let seriesColor: string;
-    // return of(this.customers.map(item =>
-    //   this.getWeatherInfo(item.location)
-    //     .subscribe((res) => {
-    //       console.log(res)
-    //       res ? seriesColor = 'red' : seriesColor = 'green';
-    //       console.log(seriesColor);
-    //       let customerObject = {
-    //         color: seriesColor,
-    //         y: item.num_of_employees,
-    //       };
-    //       totalNumOfEmployees.push(customerObject);
-    //       // return totalNumOfEmployees;
-    // })));
-    _.each(this.customers, (customer: any) => {
-      customerNames.push(customer.name);
-      let seriesColor: string;
-      let customerObject: any;
-      this.getWeatherInfo(customer.location)
-        .toPromise()
-        .then((res) => {
-          console.log(res);
-          res ? seriesColor = 'red' : seriesColor = 'green';
-          customerObject = {
-            color: seriesColor,
-            y: customer.num_of_employees,
-          };
-          totalNumOfEmployees.push(customerObject);
-          this.createChart(totalNumOfEmployees, customerNames);
-          console.log('call')
-        })
-        // .subscribe((res) => {
-        //   console.log(customer.location, res);
-        //   res ? seriesColor = 'red' : seriesColor = 'green';
-        //   console.log(seriesColor);
-        //   customerObject = {
-        //     color: seriesColor,
-        //     y: customer.num_of_employees,
-        //   };
-        //   totalNumOfEmployees.push(customerObject);
-        //   subject.next(customerObject)
-        // })
-    });
+    let arr = [1,2,3];
+    let newArr = [];
+    // console.log(this.customers);
+    // console.log(Array.from(this.customers, x => console.log(x)));
+    let customerObject: {};
+    return of(this.customers.map((elem) => {
+      return this.getWeatherInfo(elem.location)
+        .subscribe(res => res);
+        // .then(res => return res)
+    }));
   }
   
   createChart(customerData, customerNames) {
