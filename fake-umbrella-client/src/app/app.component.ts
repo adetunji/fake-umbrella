@@ -4,7 +4,7 @@ import * as Highcharts from 'highcharts';
 import * as _ from 'lodash';
 import config from '../config/config';
 import {Observable, of, ReplaySubject, Subject} from "rxjs";
-import { map } from 'rxjs/operators';
+import {map, flatMap, mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.openweatherURL = 'http://api.openweathermap.org/data/2.5/forecast?q=';
     this.getAllCustomers();
-    console.log(config);
     this.apiKey = config.key;
     // this.getWeatherInfo();
   }
@@ -40,10 +39,17 @@ export class AppComponent implements OnInit {
   public getAllCustomers() {
     this.http.get(`${this.api}/customers`)
     .subscribe((customers: any) => {
-      this.customers = customers;
-      this.getCustomerData().subscribe((res) => {
-        console.log(res);
+      // this.customers = customers;
+      _.each(customers, (customer) => {
+        this.getWeatherInfo(customer.location)
+          .subscribe((res) => {
+            console.log(res);
+            customer.weatherInfo = res;
+            this.customers.push(customer);
+            console.log(this.customers);
+          });
       });
+      // this.getCustomerData().subscribe(res => console.log(res));
       // this.createChart(customerData);
     });
   }
@@ -75,17 +81,28 @@ export class AppComponent implements OnInit {
   }
   
   public getCustomerData(): Observable<any> {
-    let arr = [1,2,3];
-    let newArr = [];
-    // console.log(this.customers);
-    // console.log(Array.from(this.customers, x => console.log(x)));
-    let customerObject: {};
-    return of(this.customers.map((elem) => {
-      return this.getWeatherInfo(elem.location)
-        .subscribe(res => res);
-        // .then(res => return res)
-    }));
+
+    // return of(this.customers.map((elem) => {
+    //     // //   return this.getWeatherInfo(elem.location)
+    //     // //     .subscribe(res => res);
+    //     // //     // .then(res => return res)
+    //     //   return this.getWeatherInfo(elem)
+    //     //     .pipe(flatMap((el) => {
+    //     //       return el;
+    //     //     })}));
+    // return of(this.customers.map((elem) => {
+    //   this.getWeatherInfo(elem.location)
+    //     .pipe(mergeMap((e) => {
+    //       console.log(e);
+    //       return e;
+    //     }));
+    // }));
+    return of(this.customers.map((elem) => elem))
+      .pipe(mergeMap((e) => {
+        return e;
+      }));
   }
+  
   
   createChart(customerData, customerNames) {
    this.chartOptions = {
